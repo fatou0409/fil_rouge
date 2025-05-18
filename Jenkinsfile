@@ -74,12 +74,13 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     withEnv(["KUBECONFIG=%KUBECONFIG_FILE%"]) {
-                        bat '''
-                           
-                            terraform init
-                            terraform plan -out=tfplan
-                            terraform apply -auto-approve tfplan
-                        '''
+                        dir('infra/terraform') {
+                            bat '''
+                                "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" init
+                                "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" plan -out=tfplan
+                                "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" apply -auto-approve tfplan
+                            '''
+                        }
                     }
                 }
             }
