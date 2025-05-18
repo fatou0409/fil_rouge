@@ -74,13 +74,12 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     withEnv(["KUBECONFIG=%KUBECONFIG_FILE%"]) {
-                        dir('terraform') {
-                            bat '''
-                                "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" init
-                                "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" plan -out=tfplan
-                                "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" apply -auto-approve tfplan
-                            '''
-                        }
+                        // Suppression du `dir('terraform')` car les fichiers sont à la racine
+                        bat '''
+                            "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" init
+                            "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" plan -out=tfplan
+                            "C:\\Users\\hp\\Desktop\\terraform_1.11.4_windows_amd64\\terraform.exe" apply -auto-approve tfplan
+                        '''
                     }
                 }
             }
