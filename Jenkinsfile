@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Cloner le dépôt') {
             steps {
-                git branch: 'main', url: 'https://github.com/fatou0409/projet_fil_rouge.git'
+                git branch: 'main', url: 'https://github.com/fatou0409/fil_rouge.git'
             }
         }
 
@@ -74,7 +74,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     withEnv(["KUBECONFIG=%KUBECONFIG_FILE%"]) {
-                        dir('terraform\\terraform') {
+                        dir('terraform') {
                             // Liste les fichiers .tf pour vérifier qu'ils sont bien présents
                             bat 'dir *.tf'
 
