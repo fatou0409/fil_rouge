@@ -2,13 +2,12 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'fatou0409'
-        BACKEND_IMAGE = "${DOCKER_USER}/profilapp-backend"
-        FRONTEND_IMAGE = "${DOCKER_USER}/profilapp-frontend"
-        MIGRATE_IMAGE = "${DOCKER_USER}/profilapp-migrate"
-        SONARQUBE_URL = "http://localhost:9000"
-        SONARQUBE_TOKEN = credentials('fafa')
-        KUBECONFIG = credentials('kubeconfig') // identifiant Jenkins du fichier kubeconfig
+        DOCKER_USER      = 'fatou0409'
+        BACKEND_IMAGE    = "${DOCKER_USER}/profilapp-backend"
+        FRONTEND_IMAGE   = "${DOCKER_USER}/profilapp-frontend"
+        MIGRATE_IMAGE    = "${DOCKER_USER}/profilapp-migrate"
+        SONARQUBE_URL    = "http://localhost:9000"
+        SONARQUBE_TOKEN  = credentials('fafa')
     }
 
     stages {
@@ -70,13 +69,19 @@ pipeline {
 
         stage('Terraform - Déploiement sur Kubernetes') {
             steps {
+                // Récupère le kubeconfig stocké comme secret fichier
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-                    bat '''
-                        cd terraform
-                        terraform init
-                        terraform plan -out=tfplan
-                        terraform apply -auto-approve tfplan
-                    '''
+                    // Expose-le dans la variable KUBECONFIG pour Terraform
+                    withEnv(["KUBECONFIG=%KUBECONFIG_FILE%"]) {
+                        dir('terraform') {
+                            // Vérifie que Terraform est disponible
+                            bat 'terraform -version'
+                            // Initialise et applique la configuration
+                            bat 'terraform init'
+                            bat 'terraform plan -out=tfplan'
+                            bat 'terraform apply -auto-approve tfplan'
+                        }
+                    }
                 }
             }
         }
