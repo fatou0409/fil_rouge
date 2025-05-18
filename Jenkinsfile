@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Cloner le dépôt') {
             steps {
-               https://github.com/fatou0409/fil_rouge.git
+                git branch: 'main', url: 'https://github.com/fatou0409/fil_rouge.git'
             }
         }
 
