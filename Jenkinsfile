@@ -74,7 +74,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     withEnv(["KUBECONFIG=%KUBECONFIG_FILE%"]) {
-                        dir('terraform') {
+                        dir('terraform\terraform') {
                             // Liste les fichiers .tf pour vérifier qu'ils sont bien présents
                             bat 'dir *.tf'
 
