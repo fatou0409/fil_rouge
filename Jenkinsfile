@@ -75,7 +75,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                     withEnv(["KUBECONFIG=%KUBECONFIG_FILE%"]) {
                         bat '''
-                            cd infra/terraform
+                           
                             terraform init
                             terraform plan -out=tfplan
                             terraform apply -auto-approve tfplan
